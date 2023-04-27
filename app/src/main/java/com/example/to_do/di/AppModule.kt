@@ -6,12 +6,16 @@ import com.example.to_do.data.TodoDao
 import com.example.to_do.data.TodoDatabase
 import com.example.to_do.data.TodoRepositoryImpl
 import com.example.to_do.domain.repository.TodoRepository
-import com.google.android.datatransport.runtime.dagger.Module
-import com.google.android.datatransport.runtime.dagger.Provides
+
+import dagger.Module
+import dagger.Provides
+
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
 @Module
-//@InstallIn(SingletonComponent::class)
+@InstallIn(SingletonComponent::class)
 
 object AppModule {
     @Provides
@@ -23,10 +27,9 @@ object AppModule {
             "todo-app-database"
         ).build()
     }
-
     @Provides
     @Singleton
-    fun provideTodoRepository(todoDao: TodoDao): TodoRepository{
-        return TodoRepositoryImpl(todoDao)
+    fun provideTodoRepository(todoDatabase: TodoDatabase): TodoRepository{
+        return TodoRepositoryImpl(todoDatabase.todoDao())
     }
 }
